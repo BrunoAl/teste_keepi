@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #141a20;
+  height: 50px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  font-family: 'Nunito Sans',sans-serif;
+  font-weight: 100;
+  font-size: 28px;
+  letter-spacing: .5px;
+}
+.App-subtitle {
+  font-size: 1.0em;
+  font-family: 'Nunito Sans',sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: .5px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
