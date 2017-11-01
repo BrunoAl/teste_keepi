@@ -1,0 +1,24 @@
+{
+  "name": "teste_keepi",
+  "version": "1.0.0",
+  "description": "## Descrição do Teste",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrunoAl/teste_keepi.git"
+  },
+  "author": "Bruno Alves do Nascimento",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrunoAl/teste_keepi/issues"
+  },
+  "homepage": "https://github.com/BrunoAl/teste_keepi#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}
