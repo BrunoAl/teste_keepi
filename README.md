@@ -8,10 +8,10 @@ O teste consiste de uma aplicação Node que lista os arquivos de um repositóri
 
 - [x] A API deve ser desenvolvida em Node;
 - [x] O dados devem ser requisitados do backend e não direto do frontend;
-* O usuário deve ser capaz de escolher o repositório no formulário;
-* A apresentação dos arquivos deve ser coerente com a estrutura do repositório;
-* Faça commits sempre que terminar uma etapa;
-* Front organizado e Back bem escrito :)
+- [x] O usuário deve ser capaz de escolher o repositório no formulário;
+- [x] A apresentação dos arquivos deve ser coerente com a estrutura do repositório;
+- [x] Faça commits sempre que terminar uma etapa;
+- [x] Front organizado e Back bem escrito :)
 
 Você possui liberdade para escolher a tecnologia usada no Frontend, mas dê preferência as libs: Angular/2, React, Vue.
 

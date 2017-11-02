@@ -8,11 +8,14 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Keep.i Fullstack Test</h1>
-
         </header>
-        <p className="App-intro">
+
+        <div className="App-intro">
+          <div>
+            <h3 className="Content-title">Meu Git, Minha Vida</h3>
+          </div>
           <Table />
-        </p>
+        </div>
       </div>
     );
   }

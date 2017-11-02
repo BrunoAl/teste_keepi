@@ -1,49 +1,6 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { listRepoFilesRequest } from '../Requests'
-
-const TableContainer = styled.table `
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-  color: #ef3e68;
-
-  tr {
-    background: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: .35em;
-  }
-
-  th, td {
-    padding: .625em;
-    text-align: center;
-  }
-
-  th {
-    font-size: .85em;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
-`
-const Section = styled.section `
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  margin-bottom: 80px;
-  margin-top: 50px;
-  padding: 25px 40px;
-  background-color: #ffffff;
-  border-radius: 6px;
-`
-
-const Caption = styled.caption `
-  font-size: 1.3em;
-  margin: .5em 0 .75em;
-`
+import { TableContainer, SectionRepo, FormRepo} from './TableDirectoryComponentStyles'
 
 class Table extends Component {
 
@@ -51,34 +8,117 @@ class Table extends Component {
     super(props)
 
     this.state = {
-
+      repoUserName: '',
+      repoName: '',
+      repoContent: [],
+      isFetchingData: false
     }
 
     this.listRepoFiles = this.listRepoFiles.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  listRepoFiles() {
-    listRepoFilesRequest('BrunoAl', 'newedenfaces-react', 'app')
-      .then(response => console.log('response ', response))
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    const { repoUserName, repoName } = this.state
+    if (!repoName || !repoName) {
+      alert('Por favor, preencha todos os campos.')
+      return;
+    }
+    this.listRepoFiles(repoUserName, repoName)
+  }
+
+  listRepoFiles(repoUserName, repoName, repoDir) {
+    this.setState({ isFetchingData: true })
+    listRepoFilesRequest(repoUserName.trim(), repoName.trim(), repoDir || '')
+      .then(response => this.setState({ repoContent: response.data, isFetchingData: false }) )
+      .catch(error => { this.setState({  isFetchingData: false }); console.error('Error fetching data from API:', error); alert('Houve um error na requisição do repositório')})
+  }
+
+  renderForm() {
+    return (
+      <FormRepo onSubmit={this.handleSubmit}>
+        <div>
+          <label>Usuário</label>
+          <input type="text" value={this.state.repoUserName} name="repoUserName" placeholder="Nome do usuário; ex: gaearon" onChange={this.handleChange} />
+        </div>
+        <div>
+          <label>Repositório</label>
+          <input type="text" value={this.state.repoName} name="repoName" placeholder="Nome do repositório; ex: react" onChange={this.handleChange} />
+        </div>
+        <div className="form-button">
+          <button type="submit">Buscar</button>
+        </div>
+        <div className="error_message">
+          {!Array.isArray(this.state.repoContent) ? <div>Repositório não encontrado.</div> : null}
+        </div>
+      </FormRepo>
+    )
+  }
+
+  renderReturnToPrevDir() {
+    const getPrevDirPath = path => {
+      // has parent dir
+      if (path.split('/').length > 2) {
+        // create an array of the folder and files of the path, then we pop the last file and folder from the array. At this point we create a new path with the remaining parts of the array, and lastly we pop the "/" from the front of our new path :)
+        return path.split('/').slice(0, -2).reduce((a, b) => `${a}/${b}`, '').substr(1)
+      } else {
+        return '' // has no parent dir
+      }
+    }
+    if (this.state.repoContent.length > 0 && this.state.repoContent[0].path.split('/').length > 1) {
+      return (
+        <tr>
+          <td>
+            <p>{
+              // eslint-disable-next-line
+            }<a href="#" onClick={() => this.listRepoFiles(this.state.repoUserName, this.state.repoName, getPrevDirPath(this.state.repoContent[0].path) )}>..</a>
+            </p>
+          </td>
+        </tr>
+      )
+    }
   }
 
   render() {
     return (
-      <Section>
+      <SectionRepo>
+        {this.renderForm()}
         <TableContainer>
-          <Caption>Meu Git, Minha Vida</Caption>
-          <tbody>
-            <tr>
-              <td>
-                <p><a href="">Row 1</a></p>
-              </td>
-            </tr>
-            <tr>
-              <td onClick={this.listRepoFiles}>Row 2</td>
-            </tr>
-          </tbody>
+          {this.state.isFetchingData ?
+            <tbody>
+              <tr>
+                <td>
+                  Carregando...
+                </td>
+              </tr>
+            </tbody> :
+            <tbody>
+              {this.renderReturnToPrevDir()}
+              {Array.isArray(this.state.repoContent) && this.state.repoContent.map(content => {
+                return (
+                  <tr key={content.sha+content.name}>
+                    <td>
+                      <p>{content.type === "dir" ?
+                        // eslint-disable-next-line
+                        <a href="#" onClick={() => this.listRepoFiles(this.state.repoUserName, this.state.repoName, content.path)}>{content.name}</a> : content.name}
+                      </p>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          }
         </TableContainer>
-      </Section>
+      </SectionRepo>
     );
   }
 }
