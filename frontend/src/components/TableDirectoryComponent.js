@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { listRepoFilesRequest } from '../Requests'
 
 const TableContainer = styled.table `
   border: 1px solid #ccc;
@@ -45,6 +46,22 @@ const Caption = styled.caption `
 `
 
 class Table extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+
+    }
+
+    this.listRepoFiles = this.listRepoFiles.bind(this)
+  }
+
+  listRepoFiles() {
+    listRepoFilesRequest('BrunoAl', 'newedenfaces-react', 'app')
+      .then(response => console.log('response ', response))
+  }
+
   render() {
     return (
       <Section>
@@ -57,7 +74,7 @@ class Table extends Component {
               </td>
             </tr>
             <tr>
-              <td>Row 2</td>
+              <td onClick={this.listRepoFiles}>Row 2</td>
             </tr>
           </tbody>
         </TableContainer>
