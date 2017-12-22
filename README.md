@@ -1,3 +1,15 @@
+# Instruções para testar
+ - Na pasta api, executar os comandos
+  1. npm install
+  2. npm start
+  (Agora a API estará disponível na porta 8080)
+
+  - Na pasta frontend, execuar os comandos
+  1. npm install
+  2. npm start
+  (Agora a aplicação estará disponível no localhost:3000)
+
+
 # Meu Git, Minha Vida
 
 ## Descrição do Teste
